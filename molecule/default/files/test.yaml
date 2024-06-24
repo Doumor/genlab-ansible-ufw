@@ -1,0 +1,12 @@
+---
+ufw_ports_deny:
+  - name: "test 1111"
+    port: "1111"
+
+  - name: "test 2222"
+    port: "2222"
+
+ufw_ranges_deny:
+  - name: "range 123 - 321"
+    start: "123"
+    end: "321"

@@ -1,0 +1,6 @@
+---
+- name: Converge
+  hosts: all
+  roles:
+    - role: genlab.ufw
+      ufw_config: "{{ role_path }}/molecule/default/files/test.yaml"

@@ -1,0 +1,30 @@
+---
+- name: "Install ufw"
+  ansible.builtin.apt:
+    name: ufw
+    state: present
+    update_cache: true
+
+- name: "Read variables from the configuration file"
+  ansible.builtin.include_vars:
+    file: "{{ ufw_config }}"
+
+- name: "Deny access to 1c platform ports with ufw"
+  community.general.ufw:
+    rule: deny
+    port: "{{ item.port }}"
+  loop: "{{ ufw_ports_deny }}"
+  register: ufw_ports_deny_state
+
+- name: "Deny access to 1c platform ports with ufw (1c workers)"
+  community.general.ufw:
+    rule: deny
+    from_port: "{{ item.start }}"
+    to_port: "{{ item.end }}"
+  loop: "{{ ufw_ranges_deny }}"
+  register: ufw_ports_deny_state
+
+- name: Enable ufw
+  community.general.ufw:
+    state: reloaded
+  when: ufw_ports_deny_state.changed or ufw_ports_deny_state.changed
