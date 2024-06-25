@@ -5,6 +5,20 @@
     state: present
     update_cache: true
 
+- name: Reset UFW
+  ufw: 
+    state: reset
+
+- name: Allow outgoing
+  community.general.ufw: 
+    default: allow
+    direction: outgoing
+
+- name: Allow ingoing
+  community.general.ufw: 
+    default: allow
+    direction: incoming
+    
 - name: "Read variables from the configuration file"
   ansible.builtin.include_vars:
     file: "{{ ufw_config }}"
